@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aplicação Filmes</title>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main>
+        <header class="header-movies">
+            <div class="container">
+                <h1 class="header-movies__title">Areaflix</h1>
+            </div>
+        </header>
+        <section class="section-movies">
+            <div class="container">
+                <div class="app-movies">
+                    <h2 class="app-movies__title">Filmes, séries e muito mais. Sem limites.</h2>
+                    <h3 class="app-movies__subtitle">Assista onde quiser. Cancele quando quiser.</h3>
+                    <p class="app-movies__msg">Pronto para assistir? Informe seu email para criar ou reiniciar sua assinatura.</p>
+                    <form class="form" method="GET">
+                        <input type="text" placeholder="Buscar filme" name="movie" class="form__input" >
+                        <input type="submit" class="form__submit" value="Vamos lá">
+                    </form>
+                </div>
+                <ul class="app-movies-all" id="movies"></ul>
+            </div>
+        </section>
+    </main>
+
+    <script>
+        function handler(e) {
+    e.preventDefault();
+
+    let movie = document.querySelector('.form__input').value;
+
+    if(movie) {
+
+        const _url = 'https://eblermuznqhpvbwsmzjr.supabase.co/rest/v1/Filmes?select=*';
+        const _options = {
+            headers: {
+                apikey: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibGVybXV6bnFocHZid3NtempyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk5ODE0NjksImV4cCI6MjAyNTU1NzQ2OX0.9-xyIiZNqf53ucE65ucSZsQOkAC1jQ0JIdHF4254r9s',
+                Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibGVybXV6bnFocHZid3NtempyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk5ODE0NjksImV4cCI6MjAyNTU1NzQ2OX0.9-xyIiZNqf53ucE65ucSZsQOkAC1jQ0JIdHF4254r9s'
+            }
+        }
+
+       // const _url = `http://www.omdbapi.com/?s=${movie}&apikey=b58710e2`;
+       // const _options = {
+            //method: 'GET',
+            //mode: 'cors',
+            //redirect: 'follow',
+            //cache: 'default'
+    
+
+        fetch(_url, _options) 
+        .then(function(response) {
+
+            // Tratamento de erro
+            if(!response.ok) throw new Error(console.log('Erro ao executar requisição'));
+
+            // Retorne um objeto no formato json
+            return response.json();
+        })
+        
+        // receber dados
+        .then(function(data) {
+            console.log(data);
+
+            let newContent = '';
+            for(let i = 0; i < data.length; i++) {
+                newContent += `<li class="app-movies-all__card">`;
+                newContent += `<figure class="app-movies-all__figure">`;
+                newContent += `<img class="app-movies-all__thumb" src="${data[i].Poster}"/>`;
+                newContent += `</figure>`;
+                newContent += `<legend class="app-movies-all__legend">`;
+                newContent += `<span class="app-movies-all__year">${data[i].Data_lancamento}</span>`;
+                newContent += `<h2 class="app-movies-all__title">${data[i].Titulo}</h2>`;
+                newContent += `</legend>`;
+                newContent += `</li>`;
+            }
+
+            document.getElementById('movies').innerHTML = newContent;
+
+        })
+
+
+
+    } else {
+        alert('Digite um nome de filme!');
+    }
+}
+
+window.onload = () => {
+
+    const submit = document.querySelector('.form__submit');
+    submit.addEventListener('click', handler);
+}
+    </script>
+</body>
+</html>
