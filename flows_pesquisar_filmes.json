@@ -1,0 +1,306 @@
+[
+    {
+        "id": "32af2b6d7ae8d6a5",
+        "type": "change",
+        "z": "075883f757353c79",
+        "name": "mover url",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload.filme",
+                "pt": "msg",
+                "to": "url",
+                "tot": "msg"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 540,
+        "y": 40,
+        "wires": [
+            [
+                "8c5c7010500df8f8"
+            ]
+        ]
+    },
+    {
+        "id": "8944dc3a20cf7d72",
+        "type": "template",
+        "z": "075883f757353c79",
+        "name": "",
+        "field": "payload.filme",
+        "fieldType": "msg",
+        "format": "handlebars",
+        "syntax": "mustache",
+        "template": "https://eblermuznqhpvbwsmzjr.supabase.co/rest/v1/Filmes?Titulo=eq.{{payload.filme}}&select=*&apikey=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImVibGVybXV6bnFocHZid3NtempyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3MDk5ODE0NjksImV4cCI6MjAyNTU1NzQ2OX0.9-xyIiZNqf53ucE65ucSZsQOkAC1jQ0JIdHF4254r9s",
+        "output": "str",
+        "x": 380,
+        "y": 40,
+        "wires": [
+            [
+                "32af2b6d7ae8d6a5"
+            ]
+        ]
+    },
+    {
+        "id": "d06b7c1cce61d690",
+        "type": "change",
+        "z": "075883f757353c79",
+        "name": "ajustar string",
+        "rules": [
+            {
+                "t": "change",
+                "p": "payload.filme",
+                "pt": "msg",
+                "from": " ",
+                "fromt": "str",
+                "to": "+",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 230,
+        "y": 40,
+        "wires": [
+            [
+                "8944dc3a20cf7d72"
+            ]
+        ]
+    },
+    {
+        "id": "f84e9b60235ef695",
+        "type": "ui_form",
+        "z": "075883f757353c79",
+        "name": "",
+        "label": "",
+        "group": "cee84585e3adf179",
+        "order": 1,
+        "width": 0,
+        "height": 0,
+        "options": [
+            {
+                "label": "Qual filme deseja buscar?",
+                "value": "filme",
+                "type": "text",
+                "required": true,
+                "rows": null
+            }
+        ],
+        "formValue": {
+            "filme": ""
+        },
+        "payload": "",
+        "submit": "Pesquisar",
+        "cancel": "Limpar",
+        "topic": "topic",
+        "topicType": "msg",
+        "splitLayout": "",
+        "className": "",
+        "x": 70,
+        "y": 40,
+        "wires": [
+            [
+                "d06b7c1cce61d690"
+            ]
+        ]
+    },
+    {
+        "id": "8c5c7010500df8f8",
+        "type": "http request",
+        "z": "075883f757353c79",
+        "name": "request api",
+        "method": "GET",
+        "ret": "obj",
+        "paytoqs": "ignore",
+        "url": "",
+        "tls": "",
+        "persist": false,
+        "proxy": "",
+        "insecureHTTPParser": false,
+        "authType": "bearer",
+        "senderr": false,
+        "headers": [],
+        "x": 690,
+        "y": 40,
+        "wires": [
+            [
+                "ad7b8ed4566486cd"
+            ]
+        ]
+    },
+    {
+        "id": "23e1c27266811001",
+        "type": "ui_template",
+        "z": "075883f757353c79",
+        "group": "2331762176a65a33",
+        "name": "",
+        "order": 2,
+        "width": "17",
+        "height": "12",
+        "format": "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title> Filmes</title>\n    <script src=\"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2\"></script>\n    <style>\n        * {\n            margin: 0;\n            padding: 0;\n        }\n\n        body {\n            background-color: #000;\n        }\n\n        main {\n            background-image: url('https://telaviva.com.br/wp-content/uploads/2021/08/netflix-.jpg');\n            background-repeat: no-repeat;\n            background-size: cover;\n            background-position: center;\n            position: absolute;\n            width: 100%;\n            height: 100%;\n        }\n\n        main:after {\n            background-color: rgba(0, 0, 0, 0.68);\n            content: '';\n            height: 100%;\n            left: 0;\n            position: absolute;\n            top: 0;\n            width: 100%;\n        }\n\n        .header-movies {\n            float: left;\n            position: relative;\n            padding: 15px 0;\n            width: 100%;\n            z-index: 9;\n        }\n\n        .header-movies__title {\n            color: red;\n            font-family: 'arial', sans-serif;\n            font-size: 40px;\n            text-shadow: 2px 2px #000000;\n        }\n\n        .section-movies {\n            align-items: center;\n            display: flex;\n            justify-content: center;\n            padding-bottom: 60px;\n            width: 100%;\n        }\n\n        .container {\n            margin-left: auto;\n            margin-right: auto;\n            max-width: 90%;\n            padding-left: 15px;\n            padding-right: 15px;\n            width: 100%;\n        }\n\n        .app-movies {\n            align-items: center;\n            display: flex;\n            flex-direction: column;\n            position: relative;\n            margin: 60px 0;\n            z-index: 9;\n        }\n\n        .app-movies__title {\n            color: white;\n            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n            font-size: 54px;\n            max-width: 70%;\n            text-align: center;\n        }\n\n        .app-movies__subtitle {\n            color: white;\n            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n            font-size: 25px;\n            font-weight: 300;\n            margin: 20px 0 30px;\n        }\n\n\n        .app-movies__msg {\n            color: white;\n            font-size: 18px;\n            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n            margin-bottom: 20px;\n        }\n\n        .app-movies-all {\n            display: grid;\n            grid-gap: 30px;\n            grid-template-columns: repeat(auto-fit, 14.46%);\n            position: relative;\n            z-index: 9;\n        }\n\n        .app-movies-all__card {\n            display: flex;\n            flex-direction: column;\n            position: relative;\n            top: 0;\n            transition: all .2s ease-in-out;\n        }\n\n        .app-movies-all__card:hover {\n            top: -5px;\n        }\n\n        .app-movies-all__figure {\n            height: 230px;\n            box-shadow: 0 0px 9px 3px rgb(255, 255, 255, 0.23);\n        }\n\n        .app-movies-all__thumb {\n            width: 100%;\n            height: 100%;\n            object-fit: cover;\n        }\n\n        .app-movies-all__legend {\n            display: flex;\n            flex-direction: column;\n        }\n\n        .app-movies-all__year {\n            color: rgba(255, 255, 255, 0.76);\n            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n            font-size: 13px;\n            background-color: #e50914;\n            max-width: 30px;\n            padding: 4px 10px;\n            line-height: 1;\n            margin: 8px 0;\n            border-radius: 2px;\n        }\n\n        .app-movies-all__title {\n            color: white;\n            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n            font-size: 16px;\n        }\n\n        .form {\n            display: flex;\n            justify-content: center;\n            width: 100%;\n        }\n\n        .form__input {\n            border: 0;\n            background-color: #fff;\n            border-radius: 0;\n            padding: 15px 20px;\n            width: 35%;\n        }\n\n        .form__submit {\n            background-color: #e50914;\n            border: 0;\n            cursor: pointer;\n            color: #fff;\n            font-size: 25px;\n            padding: 15px 30px;\n            transition: all .2s ease-in-out;\n        }\n\n        .form__submit:hover {\n            background-color: #c70913;\n        }\n\n        @media only screen and (max-width: 480px) {\n\n            .app-movies {\n                margin: 30px 0;\n            }\n\n            .header-movies__title {\n                text-align: center;\n            }\n\n            .app-movies__title {\n                font-size: 40px;\n                max-width: 100%;\n            }\n\n            .app-movies__subtitle {\n                text-align: center;\n            }\n\n            .app-movies__msg {\n                text-align: center;\n            }\n\n            .form {\n                overflow: hidden;\n                flex-direction: column;\n            }\n\n            .form__input {\n                width: 100%;\n                margin-bottom: 5px;\n            }\n\n            .form__submit {\n                font-size: 16px;\n            }\n\n            .app-movies-all {\n                grid-gap: 15px;\n                grid-template-columns: repeat(auto-fit, 47%);\n            }\n\n            .app-movies-all__figure {\n                height: 190px;\n            }\n        }\n    </style>\n</head>\n\n<body>\n    <main>\n        <header class=\"header-movies\">\n            <div class=\"container\">\n                <h1 class=\"header-movies__title\">movieflix</h1>\n            </div>\n\n        </header>\n        <section class=\"section-movies\">\n            <div class=\"container\">\n                <ul class=\"app-movies-all\" id=\"movies\">\n                    <li class=\"app-movies-all__card\">\n                        <figure class=\"app-movies-all__figure\"><img class=\"app-movies-all__thumb\" src={{msg.poster}}/>\n                        </figure>\n                        <legend class=\"app-movies-all__legend\"><span class=\"app-movies-all__year\">{{msg.ano}}</span>\n                            <h2 class=\"app-movies-all__title\">{{msg.titulo}}</h2>\n                        </legend>\n                    </li>\n                </ul>\n            </div>\n        </section>\n    </main>\n\n</html>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "classAndre",
+        "x": 560,
+        "y": 100,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ad7b8ed4566486cd",
+        "type": "change",
+        "z": "075883f757353c79",
+        "name": "carregar dados",
+        "rules": [
+            {
+                "t": "move",
+                "p": "payload[0].id",
+                "pt": "msg",
+                "to": "meuFilme",
+                "tot": "flow"
+            },
+            {
+                "t": "move",
+                "p": "payload[0].Poster",
+                "pt": "msg",
+                "to": "poster",
+                "tot": "msg"
+            },
+            {
+                "t": "move",
+                "p": "payload[0].Titulo",
+                "pt": "msg",
+                "to": "titulo",
+                "tot": "msg"
+            },
+            {
+                "t": "move",
+                "p": "payload[0].Data_lancamento",
+                "pt": "msg",
+                "to": "ano",
+                "tot": "msg"
+            },
+            {
+                "t": "move",
+                "p": "payload[0].Sinopse",
+                "pt": "msg",
+                "to": "sinopse",
+                "tot": "msg"
+            },
+            {
+                "t": "set",
+                "p": "payload",
+                "pt": "msg",
+                "to": "meu filme",
+                "tot": "str"
+            }
+        ],
+        "action": "",
+        "property": "",
+        "from": "",
+        "to": "",
+        "reg": false,
+        "x": 360,
+        "y": 100,
+        "wires": [
+            [
+                "23e1c27266811001",
+                "25902335faff7975"
+            ]
+        ]
+    },
+    {
+        "id": "0b8f6eb4a1e310a2",
+        "type": "ui_template",
+        "z": "075883f757353c79",
+        "group": "39e5187242c031fb",
+        "name": "estático",
+        "order": 1,
+        "width": "25",
+        "height": "50",
+        "format": "<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n    <meta charset=\"UTF-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">\n    <title> Filmes</title>\n    <script src=\"https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2\"></script>\n    <style>\n        * {\n            margin: 0;\n            padding: 0;\n        }\n\n        body {\n            background-color: #000;\n        }\n\n        main {\n            background-image: url('https://telaviva.com.br/wp-content/uploads/2021/08/netflix-.jpg');\n            background-repeat: no-repeat;\n            background-size: cover;\n            background-position: center;\n            position: absolute;\n            width: 100%;\n            height: 100%;\n        }\n\n        main:after {\n            background-color: rgba(0, 0, 0, 0.68);\n            content: '';\n            height: 100%;\n            left: 0;\n            position: absolute;\n            top: 0;\n            width: 100%;\n        }\n\n        .header-movies {\n            float: left;\n            position: relative;\n            padding: 15px 0;\n            width: 100%;\n            z-index: 9;\n        }\n\n        .header-movies__title {\n            color: red;\n            font-family: 'arial', sans-serif;\n            font-size: 40px;\n            text-shadow: 2px 2px #000000;\n        }\n\n        .section-movies {\n            align-items: center;\n            display: flex;\n            justify-content: center;\n            padding-bottom: 60px;\n            width: 100%;\n        }\n\n        .container {\n            margin-left: auto;\n            margin-right: auto;\n            max-width: 90%;\n            padding-left: 15px;\n            padding-right: 15px;\n            width: 100%;\n        }\n\n        .app-movies {\n            align-items: center;\n            display: flex;\n            flex-direction: column;\n            position: relative;\n            margin: 60px 0;\n            z-index: 9;\n        }\n\n        .app-movies__title {\n            color: white;\n            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n            font-size: 54px;\n            max-width: 70%;\n            text-align: center;\n        }\n\n        .app-movies__subtitle {\n            color: white;\n            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n            font-size: 25px;\n            font-weight: 300;\n            margin: 20px 0 30px;\n        }\n\n        .app-movies__msg {\n            color: white;\n            font-size: 18px;\n            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n            margin-bottom: 20px;\n        }\n\n        .app-movies-all {\n            display: grid;\n            grid-gap: 30px;\n            grid-template-columns: repeat(auto-fit, 14.46%);\n            position: relative;\n            z-index: 9;\n        }\n\n        .app-movies-all__card {\n            display: flex;\n            flex-direction: column;\n            position: relative;\n            top: 0;\n            transition: all .2s ease-in-out;\n        }\n\n        .app-movies-all__card:hover {\n            top: -5px;\n        }\n\n        .app-movies-all__figure {\n            height: 230px;\n            box-shadow: 0 0px 9px 3px rgb(255, 255, 255, 0.23);\n        }\n\n        .app-movies-all__thumb {\n            width: 100%;\n            height: 100%;\n            object-fit: cover;\n        }\n\n        .app-movies-all__legend {\n            display: flex;\n            flex-direction: column;\n        }\n\n        .app-movies-all__year {\n            color: rgba(255, 255, 255, 0.76);\n            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n            font-size: 13px;\n            background-color: #e50914;\n            max-width: 30px;\n            padding: 4px 10px;\n            line-height: 1;\n            margin: 8px 0;\n            border-radius: 2px;\n        }\n\n        .app-movies-all__title {\n            color: white;\n            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;\n            font-size: 16px;\n        }\n\n        .form {\n            display: flex;\n            justify-content: center;\n            width: 100%;\n        }\n\n        .form__input {\n            border: 0;\n            background-color: #fff;\n            border-radius: 0;\n            padding: 15px 20px;\n            width: 35%;\n        }\n\n        .form__submit {\n            background-color: #e50914;\n            border: 0;\n            cursor: pointer;\n            color: #fff;\n            font-size: 25px;\n            padding: 15px 30px;\n            transition: all .2s ease-in-out;\n        }\n\n        .form__submit:hover {\n            background-color: #c70913;\n        }\n\n        @media only screen and (max-width: 480px) {\n\n            .app-movies {\n                margin: 30px 0;\n            }\n\n            .header-movies__title {\n                text-align: center;\n            }\n\n            .app-movies__title {\n                font-size: 40px;\n                max-width: 100%;\n            }\n\n            .app-movies__subtitle {\n                text-align: center;\n            }\n\n            .app-movies__msg {\n                text-align: center;\n            }\n\n            .form {\n                overflow: hidden;\n                flex-direction: column;\n            }\n\n            .form__input {\n                width: 100%;\n                margin-bottom: 5px;\n            }\n\n            .form__submit {\n                font-size: 16px;\n            }\n\n            .app-movies-all {\n                grid-gap: 15px;\n                grid-template-columns: repeat(auto-fit, 47%);\n            }\n\n            .app-movies-all__figure {\n                height: 190px;\n            }\n        }\n    </style>\n</head>\n\n<body>\n    <main>\n        <header class=\"header-movies\">\n            <div class=\"container\">\n                <h1 class=\"header-movies__title\">Areaflix</h1>\n            </div>\n            \n        </header>\n        <section class=\"section-movies\">\n            <div class=\"container\">\n                <ul class=\"app-movies-all\" id=\"movies\">\n                    <li class=\"app-movies-all__card\">\n                        <figure class=\"app-movies-all__figure\"><img class=\"app-movies-all__thumb\" src=\"https://image.tmdb.org/t/p/w600_and_h900_bestv2/f89U3ADr1oiB1s9GkdPOEpXUk5H.jpg\"/>\n                        </figure>\n                        <legend class=\"app-movies-all__legend\"><span class=\"app-movies-all__year\">1999-03-31</span>\n                            <h2 class=\"app-movies-all__title\">Matrix</h2>\n                        </legend>\n                    </li>\n                    <li class=\"app-movies-all__card\">\n                        <figure class=\"app-movies-all__figure\"><img class=\"app-movies-all__thumb\" src=\"https://image.tmdb.org/t/p/w600_and_h900_bestv2/d74WpIsH8379TIL4wUxDneRCYv2.jpg\"/>\n                        </figure>\n                        <legend class=\"app-movies-all__legend\"><span class=\"app-movies-all__year\">1994-12-07</span>\n                            <h2 class=\"app-movies-all__title\">Forrest Gump</h2>\n                        </legend>\n                    </li>\n                    <li class=\"app-movies-all__card\">\n                        <figure class=\"app-movies-all__figure\"><img class=\"app-movies-all__thumb\" src=\"https://image.tmdb.org/t/p/w600_and_h900_bestv2/9xjZS2rlVxm8SFx8kPC3aIGCOYQ.jpg\"/>\n                        </figure>\n                        <legend class=\"app-movies-all__legend\"><span class=\"app-movies-all__year\">1997-11-18</span>\n                            <h2 class=\"app-movies-all__title\">Titanic</h2>\n                        </legend>\n                    </li>\n                    <li class=\"app-movies-all__card\">\n                        <figure class=\"app-movies-all__figure\"><img class=\"app-movies-all__thumb\" src=\"https://image.tmdb.org/t/p/w600_and_h900_bestv2/l1FfRmKRNXRSqXT5GlMo16MX2LX.jpg\"/>\n                        </figure>\n                        <legend class=\"app-movies-all__legend\"><span class=\"app-movies-all__year\">2001-11-16</span>\n                            <h2 class=\"app-movies-all__title\">Harry Potter e a Pedra Filosofal</h2>\n                        </legend>\n                    </li>\n                    <li class=\"app-movies-all__card\">\n                        <figure class=\"app-movies-all__figure\"><img class=\"app-movies-all__thumb\" src=\"https://image.tmdb.org/t/p/w600_and_h900_bestv2/8aIvm8OaJISOpVTt7rMIh7X35G5.jpg\"/>\n                        </figure>\n                        <legend class=\"app-movies-all__legend\"><span class=\"app-movies-all__year\">1994-06-24</span>\n                            <h2 class=\"app-movies-all__title\">O Rei Leão</h2>\n                        </legend>\n                    </li>\n                    <li class=\"app-movies-all__card\">\n                        <figure class=\"app-movies-all__figure\"><img class=\"app-movies-all__thumb\" src=\"https://image.tmdb.org/t/p/w600_and_h900_bestv2/6AafgfifXkFS4g2xGJZIwsPQK6P.jpg\"/>\n                        </figure>\n                        <legend class=\"app-movies-all__legend\"><span class=\"app-movies-all__year\">1995-10-30</span>\n                            <h2 class=\"app-movies-all__title\">Toy Story: Um Mundo de Aventuras</h2>\n                        </legend>\n                    </li>\n                    <li class=\"app-movies-all__card\">\n                        <figure class=\"app-movies-all__figure\"><img class=\"app-movies-all__thumb\" src=\"https://image.tmdb.org/t/p/w600_and_h900_bestv2/tagKKnJLK8W5qKJW7Cl2GR2OPCs.jpg\"/>\n                        </figure>\n                        <legend class=\"app-movies-all__legend\"><span class=\"app-movies-all__year\">1993-12-15</span>\n                            <h2 class=\"app-movies-all__title\">A Lista de Schindler</h2>\n                        </legend>\n                    </li>\n                    <li class=\"app-movies-all__card\">\n                        <figure class=\"app-movies-all__figure\"><img class=\"app-movies-all__thumb\" src=\"https://image.tmdb.org/t/p/w600_and_h900_bestv2/14hEqW67IiHlKpzKMLUXyktzZIV.jpg\"/>\n                        </figure>\n                        <legend class=\"app-movies-all__legend\"><span class=\"app-movies-all__year\">1999-12-10</span>\n                            <h2 class=\"app-movies-all__title\">À Espera de um Milagre</h2>\n                        </legend>\n                    </li>\n                </ul>\n            </div>\n        </section>\n    </main>\n\n</html>",
+        "storeOutMessages": true,
+        "fwdInMessages": true,
+        "resendOnRefresh": false,
+        "templateScope": "local",
+        "className": "",
+        "x": 80,
+        "y": 120,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "25902335faff7975",
+        "type": "ui_ui_control",
+        "z": "075883f757353c79",
+        "name": "",
+        "events": "all",
+        "x": 560,
+        "y": 160,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "cee84585e3adf179",
+        "type": "ui_group",
+        "name": "filtrar",
+        "tab": "552e8a4b4796a657",
+        "order": 1,
+        "disp": false,
+        "width": "20",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "2331762176a65a33",
+        "type": "ui_group",
+        "name": "meu filme",
+        "tab": "3f2e4d4bfa637d5a",
+        "order": 1,
+        "disp": false,
+        "width": "30",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "39e5187242c031fb",
+        "type": "ui_group",
+        "name": "exibir",
+        "tab": "552e8a4b4796a657",
+        "order": 2,
+        "disp": false,
+        "width": "30",
+        "collapse": false,
+        "className": ""
+    },
+    {
+        "id": "552e8a4b4796a657",
+        "type": "ui_tab",
+        "name": "pesquisar",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": true
+    },
+    {
+        "id": "3f2e4d4bfa637d5a",
+        "type": "ui_tab",
+        "name": "meu filme",
+        "icon": "dashboard",
+        "order": 2,
+        "disabled": false,
+        "hidden": true
+    }
+]
